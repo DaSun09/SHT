@@ -1,4 +1,4 @@
-"C:\Program Files\SHT\updater\update.bat"
+"C:\Program Files\SHT\updater\updater.bat"
 echo.
 echo SHT (Sun's Hacking Tools) V1.0.0
 echo.

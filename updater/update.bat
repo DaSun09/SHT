@@ -40,7 +40,7 @@ rd /s /q "C:\Program Files\SHT\"
 echo Instalando a versao atualizada
 
 :: Inicializa a instalacao
-git clone https://github.com/DaSun09/SHT.git
+git clone -b master https://github.com/DaSun09/SHT.git
 
 :: Checa se houve um erro com a instalacao
 if not exist "C:\Program Files\SHT\start.bat" if not exist "C:\Program Files\SHT\version" (
