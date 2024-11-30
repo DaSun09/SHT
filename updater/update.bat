@@ -1,12 +1,12 @@
 @ECHO OFF
 :: Solicita por permissoes administrativas
->nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
-if '%errorlevel%' NEQ '0' (
-    echo Solicitando permissoes administrativas...
-    goto UACPrompt
-) else ( goto gotAdmin )
+::>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+::if '%errorlevel%' NEQ '0' (
+::    echo Solicitando permissoes administrativas...
+::    goto UACPrompt
+::) else ( goto gotAdmin )
 
-:gotAdmin
+:::gotAdmin
 :: Vai para o destino de instalacao
 cd "C:\Program Files"
 
@@ -29,7 +29,7 @@ if not exist "%USERPROFILE%\AppData\Local\Programs\Git" (
 
 if not exist "C:\Program Files\SHT\" (
     cls
-    echo Nao foi possivel encontrar a versao atual do aplicativo. Erro desconhecido
+    echo Nao foi possivel encontrar a versao atual do aplicativo. Erro impossivel 0x001
     pause
     exit /B
 )
@@ -43,9 +43,9 @@ echo Instalando a versao atualizada
 git clone -b master https://github.com/DaSun09/SHT.git
 
 :: Checa se houve um erro com a instalacao
-if not exist "C:\Program Files\SHT\start.bat" if not exist "C:\Program Files\SHT\version" (
+ if not exist "C:\Program Files\SHT\version" (
     cls
-    echo Ocorreu um erro ao tentar criar o atalho do arquivo
+    echo Ocorreu um erro ao atualizar o programa
     pause
     exit /B
 )
@@ -71,19 +71,31 @@ echo oLink.Save >> CreateShortcut.vbs
 
 cscript CreateShortcut.vbs
 del CreateShortcut.vbs
+
+:: Cria um atalho na área de trabalho
+echo Set oWS = WScript.CreateObject("WScript.Shell") > CreateShortcut.vbs
+
+echo sLinkFile = "%USERPROFILE%\Desktop\SHT.lnk" >> CreateShortcut.vbs
+
+echo Set oLink = oWS.CreateShortcut(sLinkFile) >> CreateShortcut.vbs
+echo oLink.TargetPath = "C:\Program Files\SHT\start.bat" >> CreateShortcut.vbs
+echo oLink.Save >> CreateShortcut.vbs
+
+cscript CreateShortcut.vbs
+del CreateShortcut.vbs
 goto Done
 
-:Done
+:::Done
 cls
 echo Atualizacao concluida.
 pause
 exit /B
 
-:UACPrompt
-echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
-set params = %*:"=""
-echo UAC.ShellExecute "cmd.exe", "/c %~s0 %params%", "", "runas", 1 >> "%temp%\getadmin.vbs"
+:::UACPrompt
+::echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
+::set params = %*:"=""
+::echo UAC.ShellExecute "cmd.exe", "/c %~s0 %params%", "", "runas", 1 >> "%temp%\getadmin.vbs"
 
-"%temp%\getadmin.vbs"
-del "%temp%\getadmin.vbs"
-exit /B
+::"%temp%\getadmin.vbs"
+::del "%temp%\getadmin.vbs"
+::exit /B
